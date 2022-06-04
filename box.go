@@ -2,6 +2,23 @@ package golang_united_school_homework
 
 import "fmt"
 
+type EmptyError struct {
+	Message string
+}
+
+func (m EmptyError) Error() string {
+	return m.Message
+}
+
+func NotEmptyError(err error) bool {
+
+	if _, ok := err.(EmptyError); ok {
+		return false
+	}
+
+	return true
+}
+
 // box contains list of shapes and able to perform operations on them
 type box struct {
 	shapes         []Shape
