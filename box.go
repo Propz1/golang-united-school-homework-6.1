@@ -55,7 +55,7 @@ func (b *box) GetByIndex(i int) (Shape, error) {
 
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Printf("error of GetByIndex: %q\n", err)
+			fmt.Errorf("error of GetByIndex: %q\n", err)
 		}
 	}()
 
@@ -72,7 +72,7 @@ func (b *box) ExtractByIndex(i int) (Shape, error) {
 
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Printf("error of ExtractByIndex: %q\n", err)
+			fmt.Errorf("error of ExtractByIndex: %q\n", err)
 		}
 	}()
 
@@ -91,7 +91,7 @@ func (b *box) ReplaceByIndex(i int, shape Shape) (Shape, error) {
 	//panic("implement me")
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Printf("error of ReplaceByIndex: %q\n", err)
+			fmt.Errorf("error of ReplaceByIndex: %q\n", err)
 		}
 	}()
 
@@ -138,7 +138,7 @@ func (b *box) RemoveAllCircles() error {
 	//panic("implement me")
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Printf("error of RemoveAllCircles: %q\n", err)
+			fmt.Errorf("error of RemoveAllCircles: %q\n", err)
 		}
 	}()
 
