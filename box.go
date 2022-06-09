@@ -2,6 +2,10 @@ package golang_united_school_homework
 
 import "fmt"
 
+var (
+	templerr = EmptyError{Message: ""}
+)
+
 type EmptyError struct {
 	Message string
 }
@@ -53,15 +57,14 @@ func (b *box) GetByIndex(i int) (Shape, error) {
 
 	//panic("implement me")
 
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Errorf("error of GetByIndex: %q\n", err)
-		}
-	}()
+	if i < 0 || i > len(b.shapes)-1 {
+
+		return nil, fmt.Errorf("error GetByIndex: index out of range [%v] with length %v", i, len(b.shapes))
+	}
 
 	s := b.shapes[i]
 
-	return s, EmptyError{Message: ""}
+	return s, templerr
 }
 
 // ExtractByIndex allows getting shape by index and removes this shape from the list.
@@ -70,11 +73,10 @@ func (b *box) ExtractByIndex(i int) (Shape, error) {
 
 	//panic("implement me")
 
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Errorf("error of ExtractByIndex: %q\n", err)
-		}
-	}()
+	if i < 0 || i > len(b.shapes)-1 {
+
+		return nil, fmt.Errorf("error ExtractByIndex: index out of range [%v] with length %v", i, len(b.shapes))
+	}
 
 	sh := b.shapes[i]
 
@@ -82,24 +84,23 @@ func (b *box) ExtractByIndex(i int) (Shape, error) {
 
 	b.shapes = b.shapes[:len(b.shapes)-1]
 
-	return sh, EmptyError{Message: ""}
+	return sh, templerr
 }
 
 // ReplaceByIndex allows replacing shape by index and returns removed shape.
 // whether shape by index doesn't exist or index went out of the range, then it returns an error
 func (b *box) ReplaceByIndex(i int, shape Shape) (Shape, error) {
 	//panic("implement me")
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Errorf("error of ReplaceByIndex: %q\n", err)
-		}
-	}()
+	if i < 0 || i > len(b.shapes)-1 {
+
+		return nil, fmt.Errorf("error ReplaceByIndex: index out of range [%v] with length %v", i, len(b.shapes))
+	}
 
 	sh := b.shapes[i]
 
 	b.shapes[i] = shape
 
-	return sh, EmptyError{Message: ""}
+	return sh, templerr
 }
 
 // SumPerimeter provides sum perimeter of all shapes in the list.
@@ -138,11 +139,11 @@ func (b *box) RemoveAllCircles() error {
 	//panic("implement me")
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Errorf("error of RemoveAllCircles: %q\n", err)
+			fmt.Printf("error of RemoveAllCircles: %q\n", err)
 		}
 	}()
 
 	b.shapes = nil
 
-	return EmptyError{Message: ""}
+	return templerr
 }
