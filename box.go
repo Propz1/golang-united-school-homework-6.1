@@ -3,25 +3,8 @@ package golang_united_school_homework
 import "fmt"
 
 var (
-	templerr = EmptyError{Message: ""}
+	existCircle bool
 )
-
-type EmptyError struct {
-	Message string
-}
-
-func (m EmptyError) Error() string {
-	return m.Message
-}
-
-func NotEmptyError(err error) bool {
-
-	if _, ok := err.(EmptyError); ok {
-		return false
-	}
-
-	return true
-}
 
 // box contains list of shapes and able to perform operations on them
 type box struct {
@@ -48,7 +31,7 @@ func (b *box) AddShape(shape Shape) error {
 
 	b.shapes = append(b.shapes, shape)
 
-	return EmptyError{Message: ""}
+	return nil
 }
 
 // GetByIndex allows getting shape by index
@@ -64,7 +47,7 @@ func (b *box) GetByIndex(i int) (Shape, error) {
 
 	s := b.shapes[i]
 
-	return s, templerr
+	return s, nil
 }
 
 // ExtractByIndex allows getting shape by index and removes this shape from the list.
@@ -84,7 +67,7 @@ func (b *box) ExtractByIndex(i int) (Shape, error) {
 
 	b.shapes = b.shapes[:len(b.shapes)-1]
 
-	return sh, templerr
+	return sh, nil
 }
 
 // ReplaceByIndex allows replacing shape by index and returns removed shape.
@@ -100,7 +83,7 @@ func (b *box) ReplaceByIndex(i int, shape Shape) (Shape, error) {
 
 	b.shapes[i] = shape
 
-	return sh, templerr
+	return sh, nil
 }
 
 // SumPerimeter provides sum perimeter of all shapes in the list.
@@ -137,13 +120,26 @@ func (b *box) SumArea() float64 {
 // whether circles are not exist in the list, then returns an error
 func (b *box) RemoveAllCircles() error {
 	//panic("implement me")
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Printf("error of RemoveAllCircles: %q\n", err)
+
+	existCircle = false
+
+	for i := 0; i <= len(b.shapes)-1; i++ {
+
+		if _, ok := b.shapes[i].(*Circle); ok {
+
+			existCircle = true
+
+			b.shapes[i] = b.shapes[len(b.shapes)-1]
+
+			b.shapes = b.shapes[:len(b.shapes)-1]
+
 		}
-	}()
+	}
 
-	b.shapes = nil
+	if !existCircle {
+		return fmt.Errorf("error RemoveAllCircles: Circles do not exist")
+	}
 
-	return templerr
+	return nil
+
 }
